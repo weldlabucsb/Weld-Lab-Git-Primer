@@ -318,14 +318,25 @@ There are fancier patterns to use.  I believe they generally follow the UNIX wil
 
  \quad \texttt{git add *.m}
  
- Git will look for any file of the form <SOMETHING>.m, i.e., it will add any .m matlab file to the repository.
+ Git will look for any file of the form \texttt{<}SOMETHING\texttt{>}.m, i.e., it will add any .m matlab file to the repository.
  
  You can now run 
  
  \quad \texttt{git status}
  
  again, and you should now see an indication that some files have been added.  The jargon is that these files are ``staged", and they are ready to be ``commited."
+ 
+ Now it is time to use the \texttt{commit} command to tell git that you want it to mark this as a point in history that you would like remembered.  In other words, the \texttt{commit} command saves version of the current repository state.  
+ 
+ Use the command
+ 
+ \code{git commit -m "<Message describing this commit>"}
 
+The message you enter should describe this version or why it is different from the last commit.
+
+And that's about it for a repository on your computer!  You can now go along and make edits to the files in your repository.  Then you make commits whenever you see fit.  
+
+The one last note I should make is that whenever a file 
 
 \section{Using git with Remote Repositories (e.g. GitHub and the Citadel)}
 
