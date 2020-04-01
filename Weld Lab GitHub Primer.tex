@@ -244,12 +244,14 @@
     \newcommand{\valpEii}{\boldsymbol{\alpha}_{E2}}
     \newcommand{\valpM}{\boldsymbol{\alpha}_{M1}}
     
-    \newcommand{\code}[1]{\quad \texttt{#1}}
+    \newcommand{\code}[1]{\begin{adjustwidth}{0.5in}{0in}
+    \texttt{#1}
+    \end{adjustwidth}}
 
 
 \begin{document}
 \begin{center}
-{\Large Weld Lab git/GitHub Primer}
+{\Large Weld Lab git and GitHub Primer}
 
 Peter Dotti
 \end{center}
@@ -412,12 +414,42 @@ Lastly, I will discuss merging branches.  Consider the following situation:  I m
 
 git has you covered with the \texttt{merge} command.  If you have two branches, branch1 and branch2, and you want to combine the two branches, you run
 
-\code{git checkout branch1}\\
+\code{git checkout branch1}
 \code{git merge branch2}
 
+\emph{Important} note: The previous is not perfectly symmetric under exchange of branch1 and branch2.  Specifically, branch1 is updated to the merged file, whereas branch2 remains as it was.  This is important to remember because, as is usually the case, you will want to update the ``master" branch, and so you will want to have branch1 replaced with master in the previous code.
 
-\section{Using git with Remote Repositories (e.g. GitHub and the Citadel)}
+When you try this merge, it is likely that there will be some conflicts between the files (some differences that git did not feel it could resolve automatically).  Git will inform you of this, and ask you to fix them.  To do this, you simply open the file(s) it says there are conflicts in, and you look for the part where it says something like
 
-\texttt{Test}
+\code{<<<<<<<<<<<<<<<<<HEAD\\
+<some things from branch1>\\
+======================\\
+<some things from branch2>\\
+>>>>>>>>>>>>>branch2}
+
+Then you edit this section how you'd like.  Once finished, you need to tell git to commit these changes.  I recommend checking the status with \texttt{git status} at this point to see if there are any files that need to be restaged or added using \texttt{git add <fileName>} (maybe \texttt{git commit -am "message"} works as well).  Then run
+
+\code{git commit -m "<message>"}
+
+You can confirm that git seems to have done what you wanted by running 
+
+\code{git log --graph --decorate}
+
+It should show how the code branches diverged and were brought back together.  It will also tell you what commit (version) \texttt{branch2} is on.
+
+\subsection{Rebasing a Branch}
+
+I will not explain how to rebase a branch here.  I consider it outside of the scope.  It can be useful, but it is \emph{strongly} encouraged that you \emph{do not} use rebase when updating a remote repository that is stored on GitHub or the Citadel.  Otherwise, it can make a mess of the merge history if other people are making code edits on their own computer.
+
+So that you have a vague idea what it is though, the \texttt{rebase} command allows you to basically take some edited \texttt{branch2} and ``stack it on" to the end of some other \texttt{branch1}, as if you just made edits on \texttt{branch1} to get to the final combined version of the two branches.  This will sort of make it so that history ignores the time when \texttt{branch1} and \texttt{branch2} diverged, and were perhaps edited.  
+
+I believe that the way we will use git will not benefit much from this feature really, but in principle, it can make for a sort of simplified log history that makes it easier to find and go back to the old commits that you might be interested in.
+
+For the interested reader, a much better explanation is at \url{https://git-scm.com/book/en/v2/Git-Branching-Rebasing}.
+
+\section{Using git with Remote Repositories: An Application to GitHub and the Citadel)}
+
+One of the primary benefits of using git is that you can have 
+
 
 \end{document}
