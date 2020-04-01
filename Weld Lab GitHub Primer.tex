@@ -376,13 +376,41 @@ To go back to the newest version, run
 
 and it will return a list of branches (more on branches in the next section).
  
-\subsection{Branches}
+\subsection{Branches and How to Make Them}
 
 I would like to keep a discussion of branches as brief as possible here.  A fuller introduction is at \url{https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell}.  However, I believe it is necessary to know what a branch is to use remote repositories on GitHub and the Citadel, and this is one of our main goals.
 
-As we saw before, git allows you to restore a repository to the state at a previous commit.  A natural question is ``Instead of just working with previous and current versions of a code set, is there a way to have multiple different working versions of code that sort of branched off from an earlier version?"  The answer is yes, and git calls these different working versions ``branches".
+As we saw before, git allows you to restore a repository to the state at a previous commit.  A natural question is ``Instead of just working with previous and current versions of a code set, is there a way to have multiple different working versions of code that sort of branched off from an earlier version?"  The answer is yes, and git calls these different working versions ``branches."
 
-These branches can be especially useful if you want to keep a working version of the code as the master branch (git's preferred term for it) while editing in added functionality.
+These branches can be especially useful if you want to keep a working version of the code as the master branch (git's preferred term for it) while editing in added functionality, that you want to be using and testing without corrupting the master version.
+
+To make a new branch with the name \texttt{<branchName>}, enter
+
+\code{git branch <branchName>}
+
+Now to see what branch you are currently using, as well as all available branches, enter
+
+\code{git branch}
+
+You should see a list of branch names, one of which will have a * next to it, indicating that branch as the one you are working with.  You will probably see \texttt{* master}, since this is the default branch name for the first branch (it is also possible that ``master" will be some different name).  Also on the list will be the new branch you just made.  To switch to the new branch, enter
+
+\code{git checkout <branchName>}
+
+Now you can make commits as usual, and these changes will be tracked on this branch.  In essence, this branch represents one version of the code that you can alter and play with. 
+
+If you want to switch between branches, you need only type
+
+\code{git checkout <someBranchName>}
+
+This will entirely change the state of your directory.  
+
+One note on switching branches - depending on the type of file and editing software, you might need to close and reopen the file you are looking at for it to represent the new branch.  I don't believe this will be a problem with any code editing software, but it might be necessary if you are saving text files or something in your git folder.
+
+\subsection{Merging Branches}
+
+Lastly, I will discuss merging branches.  Consider the following situation:  I made some edits on this new branch I was working on.  I think it's good now and I'd like to combine it with the master branch (or some other branch).  However, the master branch has been updated by me or someone else since I started working on this new branch.  I would like to combine them somehow.
+
+git has you covered with the \texttt{merge} command.  
 
 \section{Using git with Remote Repositories (e.g. GitHub and the Citadel)}
 
