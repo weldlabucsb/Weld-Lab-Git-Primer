@@ -410,9 +410,11 @@ One note on switching branches - depending on the type of file and editing softw
 
 Lastly, I will discuss merging branches.  Consider the following situation:  I made some edits on this new branch I was working on.  I think it's good now and I'd like to combine it with the master branch (or some other branch).  However, the master branch has been updated by me or someone else since I started working on this new branch.  I would like to combine them somehow.
 
-git has you covered with the \texttt{merge} 
+git has you covered with the \texttt{merge} command.  If you have two branches, branch1 and branch2, and you want to combine the two branches, you run
 
-A needless edit to the master branch.
+\code{git checkout branch1}\\
+\code{git merge branch2}
+
 
 \section{Using git with Remote Repositories (e.g. GitHub and the Citadel)}
 
