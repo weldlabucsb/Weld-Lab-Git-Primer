@@ -1,0 +1,320 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{epstopdf}
+\usepackage{amsmath}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\usepackage{fancyhdr}
+\usepackage{setspace}  %Lets me use \vspace{10mm}
+\usepackage{color}
+\usepackage{parskip}
+\usepackage{csquotes}
+\usepackage{changepage}
+\usepackage[makeroom]{cancel}
+\usepackage{braket}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{pgfplots}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{hyperref}
+\hypersetup{colorlinks = true,
+ allcolors = blue,
+ linkcolor = black}
+
+
+\oddsidemargin = 0in
+\topmargin = -0.1in
+\headheight=9pt
+\headsep = 0pt
+\textheight = 8.5in
+\textwidth = 6.5in
+\marginparsep = 0in
+\marginparwidth = 0in
+\footskip = 0.5in
+
+
+%%%%% FOOTER %%%%%
+\pagestyle{fancy}
+\fancyhf{}
+%\rfoot{\copyright\ Peter Dotti 2016 \hspace{1cm}}
+\cfoot{\thepage}
+
+\renewcommand{\headrulewidth}{0pt}
+
+
+
+%%%%% General %%%%%
+    % Misc %
+    \newcommand{\eq}[1]{\begin{equation*} \begin{split}   #1  \end{split} \end{equation*}}
+    
+    \newcommand{\EE}[1]{\times 10^{#1}}
+    
+    \newcommand{\krond}[1]{\delta_{#1}}
+    
+    \newcommand{\dg}{\dagger}
+    
+    \newcommand{\FT}{\mathscr{F}}
+    
+    \newcommand{\Scale}[2]{\scalebox{#1}{$#2$}}  %%% TO SCALE THINGS IN MATH MODE
+   
+    
+    % Parentheses/Brakets/Etc. %
+    \newcommand{\lef}{\left}
+    \newcommand{\rig}{\right}
+    
+    \newcommand{\abs}[1]{\left| #1 \right|}
+    
+    \newcommand{\bk}{\braket}
+    \newcommand{\BK}{\Braket}
+    
+    \newcommand{\kb}[2]{\ket{#1}\!\bra{#2}}
+    \newcommand{\KB}[2]{\Ket{#1}\!\Bra{#2}}
+    
+    \newcommand{\spaceimplies}{\quad \quad \implies \quad \quad}
+    
+    % Symbols %
+    \newcommand{\rta}{\rightarrow}
+    \newcommand{\lfa}{\leftarrow}
+    \newcommand{\upa}{\uparrow}
+    \newcommand{\doa}{\downarrow}
+    \newcommand{\hb}{\hbar}
+    
+    \newcommand{\tRe}{\text{Re}}
+    \newcommand{\tIm}{\text{Im}}
+    
+    
+    % Parallel/ Perpendicular %
+    \newcommand{\para}{\parallel}
+    \newcommand{\perpen}{\bot}
+    
+    %%%%% Derivative Shortcuts %%%%%
+    \newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+    \newcommand{\der}[2]{\frac{d #1}{d #2}}
+    \newcommand{\derii}[2]{\frac{d^2 #1}{d {#2}^2}}
+    \newcommand{\pdt}[1]{\frac{\partial #1}{\partial t}}
+    \newcommand{\pa}{\partial}
+    
+    %%%%% Multivariable Derivatives %%%%%
+    \newcommand{\dive}{\nabla\cdot}
+    \newcommand{\curl}{\nabla\times}
+    
+    %% Differentials %%
+    \newcommand{\dS}{d\mathbf{S}}
+    \newcommand{\dl}{d\mathbf{l}}
+    \newcommand{\dV}{d^3r}
+    
+    % E + M &
+    \newcommand{\curlE}{\nabla \times \vE}
+    \newcommand{\curlB}{\nabla \times \vB}
+    \newcommand{\divE}{\nabla \cdot \vE}
+    \newcommand{\divB}{\nabla \cdot \vB}
+    \newcommand{\divJ}{\nabla \cdot \vJ}
+    
+    % Claim/Proof %
+    \newcommand{\Claim}{{\bf Claim:\ \ }}
+    \newcommand{\Proof}{{\bf Proof:\ \ }}
+
+
+
+%%%%% Matrix and Column Vector Shortcuts %%%%%
+    \newcommand{\twovec}[2]{\left[\begin{array}{c} #1\\ #2  \end{array}\right]} 
+    \newcommand{\threevec}[3]{\left[\begin{array}{c} #1\\ #2 \\ #3 \end{array}\right]} 
+    \newcommand{\fourvec}[4]{\left[\begin{array}{c} #1\\ #2 \\ #3\\ #4 \end{array}\right]}
+    
+    \newcommand{\twomat}[4]{\left[\begin{array}{cc} #1 & #2 \\ #3 & #4 \end{array}\right]}  
+
+
+
+%%%%% Trigonometry %%%%%
+    \newcommand{\acos}{\text{acos}}
+    \newcommand{\acosh}{\text{acosh}}
+    \newcommand{\asinh}{\text{asinh}}
+
+
+
+%%%%%% GREEK ABREVIATIONS %%%%%
+    % Upper %
+    \newcommand{\Ga}{\Gamma}
+    \newcommand{\De}{\Delta}
+    \newcommand{\TTH}{\Theta}
+    \newcommand{\La}{\Lambda}
+    \newcommand{\Om}{\Omega}
+    
+    % Lower %
+    \newcommand{\alp}{\alpha}
+    \newcommand{\be}{\beta}
+    \newcommand{\ga}{\gamma}
+    \newcommand{\de}{\delta}
+    \newcommand{\eps}{\epsilon}
+    \newcommand{\ze}{\zeta}
+    \newcommand{\et}{\eta}
+    \newcommand{\veps}{\varepsilon}
+    \newcommand{\tth}{\theta}
+    \newcommand{\kap}{\kappa}
+    \newcommand{\la}{\lambda}
+    \newcommand{\rh}{\rho}
+    \newcommand{\si}{\sigma}
+    \newcommand{\ph}{\phi}
+    \newcommand{\vphi}{\varphi}
+    \newcommand{\om}{\omega}
+
+
+%%%%%%  BOLD VECTORS (and some symbols)  %%%%%%
+    \newcommand{\partialder}[2]{\frac{\partial #1}{\partial #2}}
+    \newcommand{\fullder}[2]{\frac{d #1}{d #2}}
+    \newcommand{\vA}{\mathbf{A}}
+    \newcommand{\vB}{\mathbf{B}}
+    \newcommand{\calB}{\mathcal{B}}
+    \newcommand{\vcalB}{\boldsymbol{\mathcal{B}}}
+    \newcommand{\vC}{\mathbf{C}}
+    \newcommand{\vD}{\mathbf{D}}
+    \newcommand{\vE}{\mathbf{E}}
+    \newcommand{\calE}{\mathcal{E}}
+    \newcommand{\vcalE}{\boldsymbol{\mathcal{E}}}
+    \newcommand{\emf}{\mathcal{E}}
+    \newcommand{\vF}{\mathbf{F}}
+    \newcommand{\vJ}{\mathbf{J}}
+    \newcommand{\vH}{\mathbf{H}}
+    \newcommand{\vI}{\mathbf{I}}
+    \newcommand{\vL}{\mathbf{L}}
+    \newcommand{\vP}{\mathbf{P}}
+    \newcommand{\vQ}{\mathbf{Q}}
+    \newcommand{\vS}{\mathbf{S}}
+
+        \newcommand{\va}{\mathbf{a}}
+        \newcommand{\vj}{\mathbf{j}}
+        \newcommand{\vf}{\mathbf{f}}
+        \newcommand{\vg}{\mathbf{g}}
+        \newcommand{\vk}{\mathbf{k}}
+        \newcommand{\vm}{\mathbf{m}}
+        \newcommand{\vp}{\mathbf{p}}
+        \newcommand{\vr}{\mathbf{r}}
+        \newcommand{\vs}{\mathbf{s}}
+        \newcommand{\vu}{\mathbf{u}}
+        \newcommand{\vv}{\mathbf{v}}
+        \newcommand{\vx}{\mathbf{x}}
+        \newcommand{\vy}{\mathbf{y}}
+        \newcommand{\vz}{\mathbf{z}}
+
+        % Hat Symbols %
+        \newcommand{\ehat}{\hat{e}}
+        \newcommand{\khat}{\hat{k}}
+        \newcommand{\nhat}{\hat{n}}
+        \newcommand{\vkhat}{\mathbf{\hat{k}}}
+        \newcommand{\vrhat}{\mathbf{\hat{r}}}
+        \newcommand{\vrh}{\mathbf{\hat{r}}}
+        \newcommand{\vehat}{\mathbf{\hat{e}}}
+        \newcommand{\vxhat}{\mathbf{\hat{x}}}
+        \newcommand{\vxh}{\mathbf{\hat{x}}}
+        \newcommand{\vyhat}{\mathbf{\hat{y}}}
+        \newcommand{\vyh}{\mathbf{\hat{y}}}
+        \newcommand{\zhat}{\hat{z}}
+        \newcommand{\vzhat}{\mathbf{\hat{z}}}
+        \newcommand{\vzh}{\mathbf{\hat{z}}}
+        
+        \newcommand{\Qhat}{\hat{Q}}
+
+    % Greek %
+    \newcommand{\bs}{\boldsymbol}
+    
+    \newcommand{\valp}{\boldsymbol{\alpha}}
+    \newcommand{\vbe}{\boldsymbol \be}
+    \newcommand{\vmu}{\boldsymbol{\mu}}
+    \newcommand{\vsi}{\boldsymbol\sigma}
+    \newcommand{\vtau}{\boldsymbol\tau}
+    \newcommand{\vom}{\boldsymbol\omega}
+    
+        % Greek Unit Vectors %
+        \newcommand{\vthhat}{\boldsymbol{\hat{\theta}}}
+        \newcommand{\vrhohat}{\boldsymbol{\hat{\rho}}}
+        \newcommand{\vphihat}{\boldsymbol{\hat{\phi}}}
+
+
+    % Misc %
+    \newcommand{\valpE}{\boldsymbol{\alpha}_{E1}}
+    \newcommand{\valpEii}{\boldsymbol{\alpha}_{E2}}
+    \newcommand{\valpM}{\boldsymbol{\alpha}_{M1}}
+
+
+\begin{document}
+\begin{center}
+{\Large Weld Lab git/GitHub Primer}
+
+Peter Dotti
+\end{center}
+
+\section{Introduction}
+
+This document is intended to establish basic git and GitHub practices in the Weld Lab and to be a simplified introduction to using git and GitHub.  The hope is that implementing these practices will enable the following:
+
+\begin{enumerate}
+\item Editing code without fear of disrupting a working version
+\item Easily update versions of code once a testing version of the code is established
+\item Inherent record keeping and version recording as automatically carried out by the git software
+\item Backup versions (current and historical) of code as saved on both GitHub and the Citadel server
+\item A unified procedure so that accessing and using other lab member code is easy
+\end{enumerate}
+
+While there is desktop software for GitHub (and, presumably, git more generally), I found it not to be sufficiently intuitive, robust, or easy to justify using it over command line inputs, so this document will focus on use of command line git.
+
+Hopefully it will be easy and painless to do these things.  Please email / slack message me (Peter) if you have suggestions to improve this document in the future.  Additionally, I hope to use git on this document itself for easy editing.
+
+\section{An Important Reference}
+
+If you find that this primer is lacking some piece of information that you would like, I strongly recommend using the online ``git Book" from \url{https://git-scm.com/book/en/v2}.  I found it to be very well written and well organized, although it will certainly have more details than you need (although, you will likely not need most details past the fourth chapter, unless you wish to do more advanced things).
+
+\section{Using git on your Computer}
+
+Git revolves around the use of ``repositories."  A repository is just some directory (folder) on your computer with a hidden git file in it that designates it as a repository and allows you to set and keep track of files.
+
+You are able to change the files in the repository however you'd like, using whatever code editor or program you'd like, but you will regularly want to make a ``\texttt{commit}" with git so that the version of the repository is saved.  Additionally, you will want to occasional use the ``\texttt{push}" command to use the current version of the repository on your computer to update some remotely saved version of the repository (i.e., you will use \texttt{push} to update a stored version of the code on GitHub and the Citadel)
+
+From here on, I will assume that the reader has some command line tool with git installed on it (instructions on how to do that here: \url{https://git-scm.com/book/en/v2/Getting-Started-Installing-Git}).  I will also assume that the reader knows how to change directories and get directory path names in the command line.
+
+\subsection{Making and Using a git Repository on your Computer}
+
+Once you've navigated to the directory that you want to initialize as a repository, you run the command
+
+\quad \texttt{git init}
+
+At this point, you can fill the directory as usual (assuming it didn't already have code in it).  If you want something to test basic git functionality, I would recommend saving a text file in the directory and editing it.
+
+At this point, you can use the command
+
+\quad \texttt{git status}
+
+And it will show something like
+
+\texttt{On branch master}
+
+\texttt{No commits yet}
+
+\texttt{Untracked files:}
+
+\quad \texttt{<A list of the files in the directory>}
+
+The general meaning of this is that git knows that you have files in the directory that you might want to use as a repository, but they are currently ``untracked" and git is waiting for you to indicate which files you want it to keep track of edits for (and moreover, which files it should copy over to an external server such as GitHub or the Citadel when you ask it to do so).
+
+To indicate which of the files in the list you want it to track, use the command:
+
+\quad \texttt{git add <filename>}
+
+for each of the files you'd like.  If you want it to track all of the files, you can conveniently use
+
+\quad \texttt{git add --all}
+
+
+\section{Using git with Remote Repositories (e.g. GitHub and the Citadel)}
+
+\texttt{Test}
+
+\end{document}
