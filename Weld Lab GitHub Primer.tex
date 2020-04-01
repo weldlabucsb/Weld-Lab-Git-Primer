@@ -336,7 +336,35 @@ The message you enter should describe this version or why it is different from t
 
 And that's about it for a repository on your computer!  You can now go along and make edits to the files in your repository.  Then you make commits whenever you see fit.  
 
-The one last note I should make is that whenever a file 
+The one last note I should make is that whenever a file is edited and you want to make a new commit, you have to once again use the \texttt{git add <filename>} command to once again stage the modified files (as if you were adding a new file again), before using the \texttt{commit} command.  However, it is generally more convenient to skip the \texttt{add} step and use
+
+\code{git commit -am "<Message describing this commit>"}
+ 
+If you missed it, I added an ``a" between the - and m.  That ``a" tells git to stage all of the modified files (but \emph{not} new or untracked files) and make a commit.
+ 
+\subsection{Checking Status and Logs for a Repository}
+  
+In general, you can get helpful information about the status and history of a repository with the \texttt{git status} and \texttt{git log} commands.  
+  
+We have already seen use of \texttt{git status} above.  It will typically tell you what files have been modified or what new files have been added to the repository since the last commit.  It will also tell you whether or not the current commit has been used to update the remote repositories (e.g., GitHub or the Citadel).
+
+\texttt{git log} will tell you about the version history of the repository.  Specifically, it will list out the previous commits in reverse chronological order.  Moreover, it will tell you if you ``branched off" other versions and merged them later on in the history (more info later).  
+
+I recommend \texttt{git log --graph --decorate} which makes a sort of ascii art representation of the log history.
+ 
+ \subsection{Looking at an Old Version}
+ 
+ Now, suppose you think there was some code in a previous version that was lost or abandoned and needs resurrection.  We will now give a simple way to temporarily restore to that old version and view the file.  There are other methods, and I am frankly not sure if the \texttt{reset} command is more appropriate in most cases, but this seems the least invasive method of what I've learned in my bit of prep.
+
+First, you will want to get the identifying number for the old commit that you want to see.  To get it, run \texttt{git log}.  Each commit will have a number (in hexadecimal) after it.  It will look like \texttt{commit 9a52cbc45aa6f5c6064c654ef7951081930274fb} for example.  
+
+You can now use the command
+
+\code{git checkout 9a52cbc45aa6f5c6064c654ef7951081930274fb}
+
+It will give some statement about going into 
+ 
+\subsection{Branches}
 
 \section{Using git with Remote Repositories (e.g. GitHub and the Citadel)}
 
