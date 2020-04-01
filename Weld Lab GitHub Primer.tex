@@ -362,9 +362,19 @@ You can now use the command
 
 \code{git checkout 9a52cbc}
 
-It will give some statement about going into `detached HEAD' state (which sounds worse than it is).
+(you only need the first 7 digits).  It will give some statement about going into `detached HEAD' state (which sounds worse than it is) along with some helpful advice.
 
-Your files will now be in the state of the old commit corresponding to the number you gave it.  You can look at the code.  You can even make a new branch from it
+Your files will now be in the state of the old commit corresponding to the number you gave it.  You can open the code from the repository directory in the usual way and it will be like you've gone back in time to that old commit.  You can even make a new branch with edits from it to save that state and use it as something to work on separate from the newest version.
+
+To go back to the newest version, run
+
+\code{git checkout <branchName>}
+
+\texttt{<branchName>} will almost certainly be \texttt{master}, unless you have changed it (or want to checkout a different branch).  To see what named branches you have, you can run 
+
+\code{git branch}
+
+and it will return a list of branches (more on branches in the next section).
  
 \subsection{Branches}
 
