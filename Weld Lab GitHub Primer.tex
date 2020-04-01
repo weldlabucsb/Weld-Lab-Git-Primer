@@ -243,6 +243,8 @@
     \newcommand{\valpE}{\boldsymbol{\alpha}_{E1}}
     \newcommand{\valpEii}{\boldsymbol{\alpha}_{E2}}
     \newcommand{\valpM}{\boldsymbol{\alpha}_{M1}}
+    
+    \newcommand{\code}[1]{\quad \texttt{#1}}
 
 
 \begin{document}
@@ -311,6 +313,18 @@ To indicate which of the files in the list you want it to track, use the command
 for each of the files you'd like.  If you want it to track all of the files, you can conveniently use
 
 \quad \texttt{git add --all}
+
+There are fancier patterns to use.  I believe they generally follow the UNIX wildcard characters.  Resources exist online to learn them, such as \url{https://geek-university.com/linux/wildcard/}.  I'll give one example:
+
+ \quad \texttt{git add *.m}
+ 
+ Git will look for any file of the form <SOMETHING>.m, i.e., it will add any .m matlab file to the repository.
+ 
+ You can now run 
+ 
+ \quad \texttt{git status}
+ 
+ again, and you should now see an indication that some files have been added.  The jargon is that these files are ``staged", and they are ready to be ``commited."
 
 
 \section{Using git with Remote Repositories (e.g. GitHub and the Citadel)}
