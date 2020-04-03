@@ -471,6 +471,10 @@ Moreover, for organizational purposes, you can add sub-directories (folders) ins
 
 NOTE: You \emph{cannot} use these remote repositories the same way as you use a normal repository.  The reason is that they are ``bare" repositories, so you are not able to open the files in them from the finder / file explorer and edit them.  Instead, if you want to work with them, you are supposed to clone them to some other location on your computer and use that cloned repository to make edits and commits, and then use those commits to update the remote repository.  I believe otherwise it risks muddying up the commit history somehow... In any case, git will complain at you if you try to use a non-bare repository as a remote repository, and I presume it has a good reason for this.  This is not to say that you can't have regular repositories on the citadel.  Whether a repository is remote or not doesn't depend on where the data is physically stored, just whether or not it is designated as such.
 
+\subsection{Seeing What Remotes You Have Setup}
+
+At any point, you can see what remotes 
+
 \subsection{Making a Remote Repository on GitHub}
 
 Instead, suppose you have an existing repository and you want to put it onto GitHub.  First, log into GitHub and figure out where you want to put the repository \textemdash\ For example, you might go to \texttt{https://github.com/weldlabucsb}.  Then, on the webpage, use the prominent, green ``New" button to make a new (bare) repository on GitHub.  Follow the instructions to give it a name.  GitHub will then prompt you to set up this repository.  To do this, use the following code from the existing repository on your computer (which is very similar to the `` ...or push an existing repository from the command line" setup instructions that the GitHub website gives):
