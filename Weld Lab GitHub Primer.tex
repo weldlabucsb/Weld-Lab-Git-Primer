@@ -449,7 +449,72 @@ For the interested reader, a much better explanation is at \url{https://git-scm.
 
 \section{Using git with Remote Repositories: An Application to GitHub and the Citadel)}
 
-One of the primary benefits of using git is that you can have 
+One of the primary benefits of using git is that you can have remote repositories that can be updated with updated version from multiple programmers.  The general procedure is that you set up one (or multiple) of these remote repositories, and you can (1) copy updated commits from the remote repository that other people have edited or (2) make your own edits to the remote repository from your commits.
 
+GitHub is, at its core, just a collection of such remote repositories.  However, you are free to designate practically any directory as a remote repository, whether it be on your personal computer, some shared computer, or a group server.
+
+In this section, I hope to give the basics on using and setting up remote repositories.  More importantly, I would like to establish some best practices for the situation in the Weld Lab, which I believe is to have duplicate remote repositories on the Citadel and GitHub, since I believe it will be easy to maintain, and has some benefits in terms of organization and backups against data loss.
+
+\subsection{Cloning from an Existing Remote Repository}
+
+First, a simple example.  Suppose a repository exists on GitHub at \texttt{https://github.com/pdotti/aGitRepo}.  Opening this page, you will see that GitHub has a bright green ``Clone or download" button.  Clicking this will tell you the url for this repository, namely \texttt{https://github.com/pdotti/aGitRepo.git}.  To clone a working copy onto your computer, you need only (1) open a command line in the directory where you want the repository to be put, and (2) enter the command
+
+\code{git clone https://github.com/pdotti/aGitRepo.git}
+
+And then you have a working repository for you to make commits on, branch into new versions, and use to update the original \texttt{https://github.com/pdotti/aGitRepo.git} on GitHub, but we will get to that in a later subsection.
+
+Now instead suppose that the remote repository is on the Citadel.  Specifically, as I hope will be come common practice, it is in the \texttt{GitRemotes} directory that has been made on the WeldLab2 volume of the Citadel (aka the citadel expansion).  This will have some directory path.  When I mount it with afp on my Mac, the directory path is \texttt{/Volumes/WeldLab2/GitRemotes}.  An example remote repository in this location might be \texttt{/Volumes/WeldLab2/GitRemotes/aGitRepo.git}.  You can clone this repository in much the same way as from GitHub with the command
+
+\code{git clone /Volumes/WeldLab2/GitRemotes/aGitRepo.git}
+
+Moreover, for organizational purposes, you can add sub-directories (folders) inside the \texttt{GitRemotes} directory to help organize the repositories (a feature GitHub lacks for some reason).  For example, you could put the folder \texttt{testRepos} in the \texttt{GitRemotes} folder to hold all of the repos we use for testing.  Then the path to clone from would just be \texttt{/Volumes/WeldLab2/GitRemotes/testRepos/aGitRepo.git}
+
+NOTE: You \emph{cannot} use these remote repositories the same way as you use a normal repository.  The reason is that they are ``bare" repositories, so you are not able to open the files in them from the finder / file explorer and edit them.  Instead, if you want to work with them, you are supposed to clone them to some other location on your computer and use that cloned repository to make edits and commits, and then use those commits to update the remote repository.  I believe otherwise it risks muddying up the commit history somehow... In any case, git will complain at you if you try to use a non-bare repository as a remote repository, and I presume it has a good reason for this.  This is not to say that you can't have regular repositories on the citadel.  Whether a repository is remote or not doesn't depend on where the data is physically stored, just whether or not it is designated as such.
+
+\subsection{Making a Remote Repository on GitHub}
+
+Instead, suppose you have an existing repository and you want to put it onto GitHub.  First, log into GitHub and figure out where you want to put the repository \textemdash\ For example, you might go to \texttt{https://github.com/weldlabucsb}.  Then, on the webpage, use the prominent, green ``New" button to make a new (bare) repository on GitHub.  Follow the instructions to give it a name.  GitHub will then prompt you to set up this repository.  To do this, use the following code from the existing repository on your computer (which is very similar to the `` ...or push an existing repository from the command line" setup instructions that the GitHub website gives):
+
+\code{git remote add <remoteName> <URL>\\
+git push -u <remoteName> <myLocalBranch>}
+
+The \texttt{<URL>} will be exactly what GitHub says it should be (e.g., \texttt{https://github.com/weldlabucsb/aGitRepo.git}).  The \texttt{<remoteName>} is up to you, but I recommend \texttt{github}.  This will basically be your nickname for this repository.  By default, git likes to call it \texttt{origin}, but since there is more than one server we are likely to update to, the default seems confusing.
+
+\texttt{<myLocalBranch>} will almost always be \texttt{master} at setup, unless you change the defaults.  However, in general, you might have multiple branches that you want tracked by the remote repository (in essence, the remote repository gets multiple branches.)  In that case, \texttt{<myLocalBranch>} would be a branch with a different name (such as \texttt{branch1} or \texttt{branch2} if we go back to the example branch names used in the branches section above.
+
+\subsection{Making a Remote Repository on the Citadel}
+
+Putting a remote repository on the Citadel requires a few extra initial steps, but is otherwise quite similar.  
+
+First, you need to create a ``bare" repository from the existing repository.  To do this from the command line run
+
+\code{git clone --bare <existingRepoDirectoryPath> <newBareRepoFile>.git}
+
+Running this initially confused me slightly because you do not necessarily run it from within the existing repository.  If you happen to be in the existing repository, you should replace \texttt{<existingRepoDirectoryPath>} with a single period \texttt{.} which is the UNIX shorthand for ``the current directory".  Otherwise, it is just a path to the repository.
+
+The resulting bare repository will be in the file \texttt{<newBareRepoFile>.git}.
+
+Next, you will want to move (drag and drop) this new \texttt{<newBareRepoFile>.git} repository into its location on the Citadel.  I recommend it be somewhere in the \texttt{GitRemotes} directory on the Citadel (in WeldLab2 aka the expansion).
+
+Then, navigate to this \texttt{<newBareRepoFile>.git} repository in the command line (it acts as a normal directory), and run the command
+
+\code{git init --bare --shared}
+
+Frankly, I'm not sure this is necessary, but the reference I used said that this step should be done to configure it properly.
+
+Now, open the existing repository that you used to make the bare repository in the command line.  To tell your original repository where the new remote repository is, you run
+
+\code{git remote add <remoteName> <PATH/newBareRepoFile>.git\\
+git push -u <remoteName> <myLocalBranch>}  
+
+This is basically the same as the GitHub case, except the \texttt{URL} in that case has been replaced with a file path to the Citadel repository that you just made <PATH/newBareRepoFile>.git.  For example, the path might be \texttt{/Volumes/WeldLab2/GitRemotes/aGitRepo.git}.
+
+In this case, I recommend that \texttt{<remoteName>} be \texttt{citadel}.
+
+Again, \texttt{<myLocalBranch>} will almost certainly be \texttt{master} unless you are adding a new branch.
+
+\subsection{Pushing (``uploading") and Pulling (``downloading") from a Remote Repository}
+
+\section{Quick Overview of Commands from this Primer}
 
 \end{document}
