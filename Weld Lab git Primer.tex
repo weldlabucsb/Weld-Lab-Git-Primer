@@ -409,6 +409,7 @@ This will entirely change the state of your directory.
 One note on switching branches - depending on the type of file and editing software, you might need to close and reopen the file you are looking at for it to represent the new branch.  I don't believe this will be a problem with any code editing software, but it might be necessary if you are saving text files or something in your git folder.
 
 \subsection{Merging Branches}
+\label{sec:Merging}
 
 Lastly, I will discuss merging branches.  Consider the following situation:  I made some edits on this new branch I was working on.  I think it's good now and I'd like to combine it with the master branch (or some other branch).  However, the master branch has been updated by me or someone else since I started working on this new branch.  I would like to combine them somehow.
 
@@ -449,7 +450,7 @@ For the interested reader, a much better explanation is at \url{https://git-scm.
 
 \section{Using git with Remote Repositories: An Application to GitHub and the Citadel)}
 
-One of the primary benefits of using git is that you can have remote repositories that can be updated with updated version from multiple programmers.  The general procedure is that you set up one (or multiple) of these remote repositories, and you can (1) copy updated commits from the remote repository that other people have edited or (2) make your own edits to the remote repository from your commits.
+One of the primary benefits of using git is that you can have remote repositories that can be updated with updated version from multiple programmers.  The general procedure is that you set up one (or multiple) of these remote repositories, and you can (1) copy updated commits from the remote repository that other people have edited or (2) make updates to the remote repository based on commits you have made on your local version of the repository.
 
 GitHub is, at its core, just a collection of such remote repositories.  However, you are free to designate practically any directory as a remote repository, whether it be on your personal computer, some shared computer, or a group server.
 
@@ -511,7 +512,7 @@ Now, open the existing repository that you used to make the bare repository in t
 \code{git remote add <remoteName> <PATH/newBareRepoFile>.git\\
 git push -u <remoteName> <myLocalBranch>}  
 
-This is basically the same as the GitHub case, except the \texttt{URL} in that case has been replaced with a file path to the Citadel repository that you just made <PATH/newBareRepoFile>.git.  For example, the path might be \texttt{/Volumes/WeldLab2/GitRemotes/aGitRepo.git}.
+This is basically the same as the GitHub case, except the \texttt{URL} in that case has been replaced with a file path to the Citadel repository that you just made \texttt{<PATH/newBareRepoFile>.git}.  For example, the path might be \texttt{/Volumes/WeldLab2/GitRemotes/aGitRepo.git}.
 
 In this case, I recommend that \texttt{<remoteName>} be \texttt{citadel}.
 
@@ -519,6 +520,100 @@ Again, \texttt{<myLocalBranch>} will almost certainly be \texttt{master} unless 
 
 \subsection{Pushing (``uploading") and Pulling (``downloading") from a Remote Repository}
 
+Now that you have a remote repository, you will want to either update the remote repository from your edits, or get versions from the remote repository that others have made.
+
+\subsubsection{Push}
+To update the remote repository, you use the \texttt{push} command:
+
+\code{git push <remoteName>}
+
+After the process completes, the newest commit on your machine will be used to update the history on the remote repository (either, \texttt{github} or \texttt{citadel} if you use the name convention I suggested.)
+
+This is simplest when you only ever push the \texttt{master} branch.  If you make other versions of the code that you save as different branches, you will need to tell the remote repository to keep track of those branches as well.  Otherwise, it will only keep the \texttt{master} branch and the old versions of it (A subtlety here is that if the version history of the master branch includes multiple branches, the versions on both of those branches will also be available).
+
+If you want to add one of your branches to the remote repository, you just use the 
+
+\code{git push -u <remoteName> <myLocalBranch>}  
+
+command again, but for \texttt{<myLocalBranch>}, put the appropriate branch name.  (NOTE: you will need to be on the branch that you want to put on the remote branch by using the \code{git checkout <myLocalBranch>} command.  I think git will let you know if you mess this up though, and tell you how to do it correctly.)
+
+\subsubsection{Pull}
+
+When you want your local repository to be updated with the edits that other collaborators have made to the remote branch, you can use the \texttt{pull} command:
+
+\code{git pull <remoteName>}
+
+This command checks all of the branches you have on the citadel and updates all of the local branches on your local repository that you.  (Of course, it only updates the branches that you have told git to mirror on the remote repository.)
+
+If you only want one of the branches updated, you can use
+
+\code{git pull <remoteName> <branch>}
+
+There is a possibility that you and the person who edited the remote repository have made different, and possibly conflicting edits.  When you try the pull request, git will tell you this, and ask you to resolve the conflict in the same fashion as when using the \texttt{merge} command (see section \ref{sec:Merging})
+
+\subsubsection{Fetch and Merge - Alternative to Pull}
+
+Now, \texttt{pull} is simple, fast, and what you need most of the time.  However, maybe you want to check what new versions are in the remote repository before you use them to update your own.  
+
+To check the status of the remote repository, you use the \texttt{fetch} command.
+
+\code{git fetch <remoteName>}
+
+It will give you the status of the branches in the remote repositories (i.e. whether or not they are up to date or have been edited since you last pulled them).  If a change has been made, it will say something like
+
+\code{<branch> \ \ --> \ \ <remoteName>/<branch>}
+
+This means that there is an edit has been made to the branch \texttt{<branch>} on the remote repository, and it has saved this version to \texttt{<remoteName>/<branch>}.
+
+You can then save this new version to a new branch and checkout that new branch all in once command with
+
+\code{git checkout -b <newRemoteBranch> <remoteName>/<branch>}
+
+Now, you are free to open the files that have been freshly updated with the edits from the remote repository.  Your branch has not been updated with these edits yet.  To return to that version of the folder, just checkout the branch again, using
+\code{git checkout <branch>}
+
+Once you have looked at the two versions and decided that you would like to make the edits to your version, you can merge the two branches.  
+
+\code{git checkout <branch>}
+\code{git merge <newRemoteBranch>}
+
 \section{Quick Overview of Commands from this Primer}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \end{document}
