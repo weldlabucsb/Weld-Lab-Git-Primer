@@ -288,13 +288,13 @@ From here on, I will assume that the reader has some command line tool with git 
 
 Once you've navigated to the directory that you want to initialize as a repository, you run the command
 
-\quad \texttt{git init}
+\code{git init}
 
 At this point, you can fill the directory as usual (assuming it didn't already have code in it).  If you want something to test basic git functionality, I would recommend saving a text file in the directory and editing it.
 
 At this point, you can use the command
 
-\quad \texttt{git status}
+\code{git status}
 
 And it will show something like
 
@@ -310,21 +310,21 @@ The general meaning of this is that git knows that you have files in the directo
 
 To indicate which of the files in the list you want it to track, use the command:
 
-\quad \texttt{git add <filename>}
+\code{git add <filename>}
 
 for each of the files you'd like.  If you want it to track all of the files, you can conveniently use
 
-\quad \texttt{git add --all}
+\code{git add --all}
 
 There are fancier patterns to use.  I believe they generally follow the UNIX wildcard characters.  Resources exist online to learn them, such as \url{https://geek-university.com/linux/wildcard/}.  I'll give one example:
 
- \quad \texttt{git add *.m}
+\code{git add *.m}
  
  Git will look for any file of the form \texttt{<}SOMETHING\texttt{>}.m, i.e., it will add any .m matlab file to the repository.
  
  You can now run 
  
- \quad \texttt{git status}
+\code{git status}
  
  again, and you should now see an indication that some files have been added.  The jargon is that these files are ``staged", and they are ready to be ``commited."
  
@@ -468,13 +468,27 @@ Now instead suppose that the remote repository is on the Citadel.  Specifically,
 
 \code{git clone /Volumes/WeldLab2/GitRemotes/aGitRepo.git}
 
-Moreover, for organizational purposes, you can add sub-directories (folders) inside the \texttt{GitRemotes} directory to help organize the repositories (a feature GitHub lacks for some reason).  For example, you could put the folder \texttt{testRepos} in the \texttt{GitRemotes} folder to hold all of the repos we use for testing.  Then the path to clone from would just be \texttt{/Volumes/WeldLab2/GitRemotes/testRepos/aGitRepo.git}
+Moreover, for organizational purposes, you can add sub-directories (folders) inside the \texttt{GitRemotes} directory to help organize the repositories (a feature GitHub lacks for some reason).  For example, you could put the folder \texttt{testRepos} in the \texttt{GitRemotes} folder to hold all of the repos we use for testing.  Then the path to clone from would just be
+ 
+\code{/Volumes/WeldLab2/GitRemotes/testRepos/aGitRepo.git}
 
 NOTE: You \emph{cannot} use these remote repositories the same way as you use a normal repository.  The reason is that they are ``bare" repositories, so you are not able to open the files in them from the finder / file explorer and edit them.  Instead, if you want to work with them, you are supposed to clone them to some other location on your computer and use that cloned repository to make edits and commits, and then use those commits to update the remote repository.  I believe otherwise it risks muddying up the commit history somehow... In any case, git will complain at you if you try to use a non-bare repository as a remote repository, and I presume it has a good reason for this.  This is not to say that you can't have regular repositories on the citadel.  Whether a repository is remote or not doesn't depend on where the data is physically stored, just whether or not it is designated as such.
 
 \subsection{Seeing What Remotes You Have Setup}
 
-At any point, you can see what remotes 
+At any point, you can see what remote repositories you have setup.  This is done with the command:
+
+\code{git remote}
+
+Or, if you want added information about the exact URL or file path of the remote repositories
+
+\code{git remote -vv}
+
+Information about what branches are ``tracking" which remote branches can be attained with 
+
+\code{git branch -vv}
+
+Additionally, the remote repositories are shown when you use the \texttt{log} commands, but of course, they could need updating if you haven't told git to check the server / citadel.  (See section \ref{sec:PushPull} for updating your local repository with the \texttt{pull} command)
 
 \subsection{Making a Remote Repository on GitHub}
 
@@ -519,6 +533,7 @@ In this case, I recommend that \texttt{<remoteName>} be \texttt{citadel}.
 Again, \texttt{<myLocalBranch>} will almost certainly be \texttt{master} unless you are adding a new branch.
 
 \subsection{Pushing (``uploading") and Pulling (``downloading") from a Remote Repository}
+\label{sec:PushPull}
 
 Now that you have a remote repository, you will want to either update the remote repository from your edits, or get versions from the remote repository that others have made.
 
@@ -577,15 +592,100 @@ Once you have looked at the two versions and decided that you would like to make
 \code{git checkout <branch>}
 \code{git merge <newRemoteBranch>}
 
+\newpage
 \section{Quick Overview of Commands from this Primer}
+The following is a quick reference table of the commands shown in this primer.  Inputs in square brackets are options that change how much information git shows you about the action, but not the effect of the command.
+
+\begin{tabular}{|l|}
+\hline
+\textbf{Checking Status}\\
+\quad \texttt{git status [-vv]}\\
+
+\quad\texttt{git log [--graph] [--decorate]}\\
+
+\quad \texttt{git diff}\\
+\quad \quad(shows changes between current version and last commit)\\
+\hline
+\textbf{Create a repository} out of the current directory (not for creating a remote repositories)\\
+\quad \texttt{git init}\\
+\hline
+\textbf{Staging files} so that they are updated in the next commit\\
+\quad \texttt{git add <filename>}\\
+
+\quad \texttt{git add --all}\\
+
+\quad \texttt{git add *.<fileSuffix>}\\
+\hline
+\textbf{Commits}\\
+ \quad \texttt{git commit -m "<Message describing this commit>"}\\
+
+\quad \texttt{git commit -am "<Message describing this commit>"}\\
+\quad \quad (Stages all modified files and commits in one step.  Saves using \texttt{add} command.)\\
+
+\hline
+\textbf{Branches}\\
+
+\quad \texttt{git branch}  \ \ \ (See what branches you have.)\\ 
+
+\quad \texttt{git branch <branchName>} \ \ \ (Make a new branch called \texttt{<branchName>})\\
+
+\quad \texttt{git checkout <branchNameORcommitNumber>} \\
+\quad \quad(Switch to \texttt{<branchName>} OR the old version with commit number)\\
+
+
+\hline
+\textbf{Merging branches}\\  The following two commands changes \texttt{branch1} into a merge of the two branches. \\
+\quad \texttt{git checkout branch1}\\
+\quad \texttt{git merge branch2}\\
+
+\hline
+\textbf{Cloning a remote repository} onto your computer\\
+\quad \texttt{git clone <githubURL>}\\
+
+\quad \texttt{git clone <directoryPathForRemoteRepositoryOnCitadel>.git}\\
+
+\hline
+\textbf{Checking remote repositories} that your local repository is linked to\\
+\quad \texttt{git remote [-vv]}\\
+
+\hline
+\textbf{New GitHub repository} setup.\\
+After initializing a repository on GitHub (by just making one on the website)\\
+\quad \texttt{git remote add <remoteName> <gitHubRepositoryURL>}\\
+\quad \texttt{git push -u <remoteName> <myLocalBranch>}\\
+\hline
+\textbf{New Citadel Repository}\\
+\quad \texttt{git clone --bare <existingRepoDirectoryPath> <newBareRepoFile>.git}\\
+Move \texttt{<newBareRepoFile>.git} to the appropriate folder on the citadel.\\  
+Run the following command in that citadel folder.\\
+\quad \texttt{git init --bare --shared}\\
+Then, from the original working repository that you are linking to the remote repository, run\\
+\quad \texttt{git remote add <remoteName> <PATH/newBareRepoFile>.git}\\
+\quad \texttt{git push -u <remoteName> <myLocalBranch>}\\
+
+\hline
+\textbf{Using Remotes} - Updating them and copying updates from them\\
+\quad \texttt{git push <remoteName>}\\
+\quad\quad Updates the remote, \texttt{ <remoteName>}, with the linked branch in your local repository.\\
+\quad \texttt{git push --all}\\
+
+\quad \texttt{git pull <remoteName>}\\
+
+
+\quad \texttt{git pull <remoteName> <branch>}\\
+
+
+
+\quad \texttt{git fetch <remoteName>}\\
+
+
+\quad \texttt{git checkout -b <newRemoteBranch> <remoteName>/<branch>}
 
 
 
 
 
-
-
-
+\end{tabular}
 
 
 
