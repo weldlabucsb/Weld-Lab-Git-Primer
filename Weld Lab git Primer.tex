@@ -276,6 +276,8 @@
 Peter Dotti
 \end{center}
 
+\tableofcontents
+\newpage
 \section{Introduction}
 
 This document is intended to establish basic git and GitHub practices in the Weld Lab and to be a simplified introduction to using git and GitHub.  The hope is that implementing these practices will enable the following:
@@ -381,6 +383,12 @@ I recommend
 \code{git log --graph --decorate} 
 which makes an ascii art representation of the log history with all of the branches.
  
+ Lastly, you might be interested in 
+ 
+ \code{git diff}
+ 
+ which will show you the differences between the last commit and the current version.\footnote{I believe you can check differences between two different branches as well.  It should be easy, but you'll have to look it up.}
+ 
  \subsection{Looking at an Old Version}
  
  As a relevant example situation, suppose you think there was some code in a previous version that was lost or abandoned and needs resurrection.  We will now give a simple way to temporarily restore to that old version and view the files as they were in that previous state.\footnote{I should say that there are other methods for this than I give here, and I am frankly not sure if the \texttt{reset} command is more appropriate in most cases, but the example given here seems the least invasive method of what I've learned in my bit of prep.  You can also probably make a branch with a name out of the old version with something like \texttt{git checkout -b ...} which might be useful.}
@@ -470,6 +478,9 @@ You can confirm that git seems to have done what you wanted by running
 \code{git log --graph --decorate}
 
 It should show how the code branches diverged and were brought them back together.  It will also tell you what commit (version) \texttt{branch2} is on.
+
+You can delete an old branch with 
+\code{git branch -d <branchName>}
 
 \subsection{Rebasing a Branch}
 
@@ -598,15 +609,11 @@ If you want to add one of your branches to the remote repository, you just use t
 
 command again, but for \texttt{<myLocalBranch>}, put the appropriate branch name.  (NOTE: you will need to be on the branch that you want to put on the remote branch by using the \code{git checkout <myLocalBranch>} command.  I think git will let you know if you mess this up though and tell you how to do it correctly.)
 
+If you want to push to multiple remotes at once (e.g., you want to update the \texttt{citadel} and \texttt{github} remotes in one go) it is unfortunately, not totally trivial.  You can set up this option in 2 minutes by following the instructions at \url{https://jigarius.com/blog/multiple-git-remote-repositories}.
+
 \subsubsection{Pull}
 
 When you want your local repository to be updated with the edits that other collaborators have made to the remote branch, you can use the \texttt{pull} command:
-
-\code{git pull <remoteName>}
-
-This command checks all of the branches you have on the remote \texttt{<remoteName>} and updates all of the local branches on your local repository.\footnote{Of course, it only updates the branches that you have told git to ``mirror" on the remote repository with the \texttt{git push -u ...} command.}
-
-If you only want one of the branches updated, you can use
 
 \code{git pull <remoteName> <branch>}
 
@@ -658,7 +665,7 @@ Once you have looked at the two versions and decided that you would like to make
 \quad\texttt{git log [--graph] [--decorate]}\\
 
 \quad \texttt{git diff}\\
-\quad \quad(shows changes between current version and last commit)\\
+
 \hline
 \smallbold{Create a repository} out of the current directory (not for creating a remote repositories)\\
 \quad \texttt{git init}\\
@@ -674,17 +681,21 @@ Once you have looked at the two versions and decided that you would like to make
  \quad \texttt{git commit -m "<Message describing this commit>"}\\
 
 \quad \texttt{git commit -am "<Message describing this commit>"}\\
-\quad \quad (Stages all modified files and commits in one step.  Saves using \texttt{add} command.)\\
+\quad \quad Stages all modified files and commits in one step.  Saves using \texttt{add} command.\\
 
 \hline
 \smallbold{Branches}\\
 
-\quad \texttt{git branch}  \ \ \ (See what branches you have.)\\ 
+\quad \texttt{git branch}\\
+\quad\quad See what branches you have.\\ 
 
-\quad \texttt{git branch <branchName>} \ \ \ (Make a new branch called \texttt{<branchName>})\\
+\quad \texttt{git branch <branchName>} \\
+\quad \quad Make a new branch called \texttt{<branchName>}\\
 
 \quad \texttt{git checkout <branchNameORcommitNumber>} \\
-\quad \quad(Switch to \texttt{<branchName>} OR the old version with commit number)\\
+\quad \quad Switch to \texttt{<branchName>} OR the old version with commit number\\
+\quad \texttt{git branch -d <branchName>}\\
+\quad\quad Delete old branch\\
 
 
 \hline
@@ -721,12 +732,8 @@ Then, from the original working repository that you are linking to the remote re
 \smallbold{Using Remotes} - Updating them and copying updates from them\\
 \quad \texttt{git push <remoteName>}\\
 \quad\quad Updates the remote, \texttt{ <remoteName>}, with the linked branch in your local repository.\\
-\quad \texttt{git push --all}\\
-\quad \quad Update all remotes\\
 \quad \texttt{git pull <remoteName> <branch>}\\
 \quad \quad Update your local branch \texttt{<branch>} based on the remote \texttt{<remoteName>}\\
-\quad \texttt{git pull <remoteName>}\\
-\quad \quad Update all branches based on the remote repository \texttt{<remoteName>}\\
 
 \quad \texttt{git fetch <remoteName>}\\
 \quad \quad Check remote for edits (but do not update)\\
