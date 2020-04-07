@@ -18,6 +18,8 @@
 \usepackage[makeroom]{cancel}
 \usepackage{braket}
 
+\usepackage{typearea}
+
 \usepackage{tikz}
 \usetikzlibrary{arrows}
 \usepackage{pgfplots}
@@ -30,16 +32,20 @@
  allcolors = blue,
  linkcolor = black}
 
-
+\paperwidth = 8.5in
+\paperheight = 11in
+\voffset = 0in  
+\hoffset = 0in
 \oddsidemargin = 0in
 \topmargin = -0.1in
 \headheight=9pt
 \headsep = 0pt
-\textheight = 8.5in
+\textheight = 9in
 \textwidth = 6.5in
 \marginparsep = 0in
 \marginparwidth = 0in
 \footskip = 0.5in
+
 
 
 %%%%% FOOTER %%%%%
@@ -247,6 +253,20 @@
     \newcommand{\code}[1]{\begin{adjustwidth}{0.5in}{0in}
     \texttt{#1}
     \end{adjustwidth}}
+    
+    
+\newenvironment{changemargin}[2]{%
+  \begin{list}{}{%
+    \setlength{\topsep}{-1in}%
+    \setlength{\leftmargin}{#1}%
+    \setlength{\rightmargin}{#2}%
+    \setlength{\listparindent}{\parindent}%
+    \setlength{\itemindent}{\parindent}%
+    \setlength{\parsep}{\parskip}%
+  }%
+  \item[]}{\end{list}}
+  
+  \newcommand{\smallbold}[1]{\footnotesize\textbf{#1}}
 
 
 \begin{document}
@@ -261,36 +281,43 @@ Peter Dotti
 This document is intended to establish basic git and GitHub practices in the Weld Lab and to be a simplified introduction to using git and GitHub.  The hope is that implementing these practices will enable the following:
 
 \begin{enumerate}
+\item Collaborative access to shared code run on multiple machines
 \item Editing code without fear of disrupting a working version
-\item Easily update versions of code once a testing version of the code is established
+\item Easily update or revering versions of code after experimenting
 \item Inherent record keeping and version recording as automatically carried out by the git software
 \item Backup versions (current and historical) of code as saved on both GitHub and the Citadel server
-\item A unified procedure so that accessing and using other lab member code is easy
 \end{enumerate}
 
-While there is desktop software for GitHub (and, presumably, git more generally), I found it not to be sufficiently intuitive, robust, or easy to justify using it over command line inputs, so this document will focus on use of command line git.
+While there is desktop software for GitHub (and, presumably, git more generally), the command line version of git is very simple and intuitive, gives pretty easy to read output, and has very helpful warnings and failsafes built in to prevent you from doing something foolish.  Additionally, the command line offers full functionality, whereas the desktop apps are a restricted subset.  For this reason, I recommend using the command line and have written this document for that.  I do encourage experimentation with desktop applications if you'd like, especially for more graphical version edits - this document should still define the functionality in those applications.
 
-Hopefully it will be easy and painless to do these things.  Please email / slack message me (Peter) if you have suggestions to improve this document in the future.  Additionally, I hope to use git on this document itself for easy editing.
+Please email / slack message me (Peter) if you have suggestions to improve this document in the future.  Additionally, I hope to use git on this document itself for easy editing.
 
 \section{An Important Reference}
 
-If you find that this primer is lacking some piece of information that you would like, I strongly recommend using the online ``git Book" from \url{https://git-scm.com/book/en/v2}.  I found it to be very well written and well organized, although it will certainly have more details than you need (although, you will likely not need most details past the fourth chapter, unless you wish to do more advanced things).
+If you find that this primer contains some lacuna for your purposes, I strongly recommend using the online ``git Book" from \url{https://git-scm.com/book/en/v2}.  I found it to be very well written and well organized.  The hope is that this document will highlight the key features for our purposes and expedite learning.
 
 \section{Using git on your Computer}
 
 Git revolves around the use of ``repositories."  A repository is just some directory (folder) on your computer with a hidden git file in it that designates it as a repository and allows you to set and keep track of files.
 
-You are able to change the files in the repository however you'd like, using whatever code editor or program you'd like, but you will regularly want to make a ``\texttt{commit}" with git so that the version of the repository is saved.  Additionally, you will want to occasional use the ``\texttt{push}" command to use the current version of the repository on your computer to update some remotely saved version of the repository (i.e., you will use \texttt{push} to update a stored version of the code on GitHub and the Citadel)
+You use a repository like a regular folder with code in it.  Edit the code (or general files) with your preferred software, and save it like normal without any added thought.
 
-From here on, I will assume that the reader has some command line tool with git installed on it (instructions on how to do that here: \url{https://git-scm.com/book/en/v2/Getting-Started-Installing-Git}).  I will also assume that the reader knows how to change directories and get directory path names in the command line.
+To use git, you will occasionally run a ``\texttt{commit}" command in the repository to tell git to save a version.  The state of the folder when you committed it is then stored in a log history, and you can easily access any old versions.
+
+Additionally, once you have a repository, you can use it in conjunction with a remote version of the repository.  A remote version is a repository saved on GitHub or some other server, e.g. the citadel.  The state of the local repository and remote repositories can diverge, say, from different people editing them, but git is set up to allow you to easily update the remote version using your local edits, or vice versa.  This is done with the \texttt{push} command to put your edits on the remote repository, or \texttt{pull} to take the remote edits and put them on your local machine.  Git will let you know if there are conflicting edits to both versions, and let you manually view them and edit into them into a desirable combined version, which you can then use to update the local repository, remote repository, or both.
+
+\subsection{Installing git}
+From here on, I will assume that the reader has some command line tool with git installed on it (instructions on how to do that here: \newline\url{https://git-scm.com/book/en/v2/Getting-Started-Installing-Git}).  I will also assume that the reader knows how to change directories and get directory path names in the command line.
 
 \subsection{Making and Using a git Repository on your Computer}
 
-Once you've navigated to the directory that you want to initialize as a repository, you run the command
+First, change the working directory in the command line so that you are using the directory that you want to turn into a repository.  Then run the command
 
 \code{git init}
 
-At this point, you can fill the directory as usual (assuming it didn't already have code in it).  If you want something to test basic git functionality, I would recommend saving a text file in the directory and editing it.
+The directory is now a repository.
+
+At this point, you can edit the files in the directory (which is now also a repository) as you normally would.  If you want something to test basic git functionality, I would recommend saving a text file in the directory and editing it.
 
 At this point, you can use the command
 
@@ -306,27 +333,27 @@ And it will show something like
 
 \quad \texttt{<A list of the files in the directory>}
 
-The general meaning of this is that git knows that you have files in the directory that you might want to use as a repository, but they are currently ``untracked" and git is waiting for you to indicate which files you want it to keep track of edits for (and moreover, which files it should copy over to an external server such as GitHub or the Citadel when you ask it to do so).
+The general meaning of this is that git knows that you have files in the directory that you might want to use as a repository, but they are currently ``untracked" and git is waiting for you to indicate which files you want it keep track of (and moreover, which files it should copy over to an external server such as GitHub or the Citadel when you ask it to do so).  When you later make commits, only the files you have told it to track will be saved in the version history, so make sure you don't forget any files!  Fortunately, git is quite good at make missing files hard to ignore, unless you have explicitly told it to ignore them with a \texttt{.gitignore} file.\footnote{I will not explain .gitignore in this document, but it is pretty easy to figure out from looking up.}
 
-To indicate which of the files in the list you want it to track, use the command:
+To tell git to track the file \texttt{<filename>}, use the command:
 
 \code{git add <filename>}
 
-for each of the files you'd like.  If you want it to track all of the files, you can conveniently use
+You can go through and do this for each file in the repository.  If you want it to track all of the files, you can conveniently use
 
 \code{git add --all}
 
-There are fancier patterns to use.  I believe they generally follow the UNIX wildcard characters.  Resources exist online to learn them, such as \url{https://geek-university.com/linux/wildcard/}.  I'll give one example:
+There are fancier patterns to use.  I believe they generally follow the UNIX wildcard characters convention.  Resources exist online to learn them, such as \url{https://geek-university.com/linux/wildcard/}.  I'll give one relevant example:
 
 \code{git add *.m}
  
  Git will look for any file of the form \texttt{<}SOMETHING\texttt{>}.m, i.e., it will add any .m matlab file to the repository.
  
- You can now run 
+To see that this process worked, you can again run
  
 \code{git status}
  
- again, and you should now see an indication that some files have been added.  The jargon is that these files are ``staged", and they are ready to be ``commited."
+You should now see an indication that some files have been added.  The jargon is that these files are ``staged", and they are ready to be ``commited."
  
  Now it is time to use the \texttt{commit} command to tell git that you want it to mark this as a point in history that you would like remembered.  In other words, the \texttt{commit} command saves version of the current repository state.  
  
@@ -334,29 +361,29 @@ There are fancier patterns to use.  I believe they generally follow the UNIX wil
  
  \code{git commit -m "<Message describing this commit>"}
 
-The message you enter should describe this version or why it is different from the last commit.
+The message you enter should briefly describe the version saved in this commit, with the intention of being able to understand easily from the message, what that version is, and whether or not you might want to revert to it.
 
-And that's about it for a repository on your computer!  You can now go along and make edits to the files in your repository.  Then you make commits whenever you see fit.  
-
-The one last note I should make is that whenever a file is edited and you want to make a new commit, you have to once again use the \texttt{git add <filename>} command to once again stage the modified files (as if you were adding a new file again), before using the \texttt{commit} command.  However, it is generally more convenient to skip the \texttt{add} step and use
+An important note, whenever a file is edited and you want to make a new commit, you have to once again use the \texttt{git add <filename>} command to again stage the modified files before they will be saved in the new commit.  However, you can conveniently skip this step with
 
 \code{git commit -am "<Message describing this commit>"}
  
-If you missed it, I added an ``a" between the - and m.  That ``a" tells git to stage all of the modified files (but \emph{not} new or untracked files) and make a commit.
+If you missed it, I added an ``a" between the - and m.  That ``a" tells git to stage all of the modified files and then make a commit (it will \emph{not} stage any new files though).
  
 \subsection{Checking Status and Logs for a Repository}
   
-In general, you can get helpful information about the status and history of a repository with the \texttt{git status} and \texttt{git log} commands.  
+In general, you can attain the status and history of a repository with the \texttt{git status} and \texttt{git log} commands.  
   
-We have already seen use of \texttt{git status} above.  It will typically tell you what files have been modified or what new files have been added to the repository since the last commit.  It will also tell you whether or not the current commit has been used to update the remote repositories (e.g., GitHub or the Citadel).
+We have already seen use of \texttt{git status} above.  It will tell you what files have been modified or what new files have been added to the repository since the last commit.  It will also tell you whether or not the current commit has been used to update the remote repositories (e.g., GitHub or the Citadel).\footnote{More information on remote repositories in section \ref{sec:Remotes}}
 
-\texttt{git log} will tell you about the version history of the repository.  Specifically, it will list out the previous commits in reverse chronological order.  Moreover, it will tell you if you ``branched off" other versions and merged them later on in the history (more info later).  
+\texttt{git log} will tell you about the version history of the repository.  Specifically, it will list out the previous commits in reverse chronological order.  Moreover, it will tell you if you ``branched off" other versions and merged them later on in the history (more info on branches in section \ref{sec:Branches}).  
 
-I recommend \texttt{git log --graph --decorate} which makes a sort of ascii art representation of the log history.
+I recommend 
+\code{git log --graph --decorate} 
+which makes an ascii art representation of the log history with all of the branches.
  
  \subsection{Looking at an Old Version}
  
- Now, suppose you think there was some code in a previous version that was lost or abandoned and needs resurrection.  We will now give a simple way to temporarily restore to that old version and view the file.  There are other methods, and I am frankly not sure if the \texttt{reset} command is more appropriate in most cases, but this seems the least invasive method of what I've learned in my bit of prep.
+ As a relevant example situation, suppose you think there was some code in a previous version that was lost or abandoned and needs resurrection.  We will now give a simple way to temporarily restore to that old version and view the files as they were in that previous state.\footnote{I should say that there are other methods for this than I give here, and I am frankly not sure if the \texttt{reset} command is more appropriate in most cases, but the example given here seems the least invasive method of what I've learned in my bit of prep.  You can also probably make a branch with a name out of the old version with something like \texttt{git checkout -b ...} which might be useful.}
 
 First, you will want to get the identifying number for the old commit that you want to see.  To get it, run \texttt{git log}.  Each commit will have a number (in hexadecimal) after it.  It will look like \texttt{commit 9a52cbc45aa6f5c6064c654ef7951081930274fb} for example.  
 
@@ -364,9 +391,9 @@ You can now use the command
 
 \code{git checkout 9a52cbc}
 
-(you only need the first 7 digits).  It will give some statement about going into `detached HEAD' state (which sounds worse than it is) along with some helpful advice.
+(you only need the first 7 digits of the commit number).  It will give some statement about going into `detached HEAD' state (which sounds worse than it is) along with some helpful advice.
 
-Your files will now be in the state of the old commit corresponding to the number you gave it.  You can open the code from the repository directory in the usual way and it will be like you've gone back in time to that old commit.  You can even make a new branch with edits from it to save that state and use it as something to work on separate from the newest version.
+Your files will now be in the state of the old commit corresponding to the number you gave it.  You can open the code from the repository directory in the usual way, and it will be like you've gone back in time to that old commit.  You can even make a new branch with edits from it to save that state and use it as something to work on separately from the newest version.
 
 To go back to the newest version, run
 
@@ -379,12 +406,13 @@ To go back to the newest version, run
 and it will return a list of branches (more on branches in the next section).
  
 \subsection{Branches and How to Make Them}
+\label{sec:Branches}
 
 I would like to keep a discussion of branches as brief as possible here.  A fuller introduction is at \url{https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell}.  However, I believe it is necessary to know what a branch is to use remote repositories on GitHub and the Citadel, and this is one of our main goals.
 
 As we saw before, git allows you to restore a repository to the state at a previous commit.  A natural question is ``Instead of just working with previous and current versions of a code set, is there a way to have multiple different working versions of code that sort of branched off from an earlier version?"  The answer is yes, and git calls these different working versions ``branches."
 
-These branches can be especially useful if you want to keep a working version of the code as the master branch (git's preferred term for it) while editing in added functionality, that you want to be using and testing without corrupting the master version.
+These branches can be especially useful if you want to keep a working version of the code as the master branch (git's preferred term for it), while editing in added functionality on a test branch that you want to be using and testing without corrupting the master version.
 
 To make a new branch with the name \texttt{<branchName>}, enter
 
@@ -394,7 +422,7 @@ Now to see what branch you are currently using, as well as all available branche
 
 \code{git branch}
 
-You should see a list of branch names, one of which will have a * next to it, indicating that branch as the one you are working with.  You will probably see \texttt{* master}, since this is the default branch name for the first branch (it is also possible that ``master" will be some different name).  Also on the list will be the new branch you just made.  To switch to the new branch, enter
+You should see a list of branch names, one of which will have a * next to it, indicating that branch as the one you are working with.  You will probably see \texttt{*master}, since this is the default branch name for the first branch.  Also on the list will be the new branch you just made.  To switch to the new branch, enter
 
 \code{git checkout <branchName>}
 
@@ -404,21 +432,21 @@ If you want to switch between branches, you need only type
 
 \code{git checkout <someBranchName>}
 
-This will entirely change the state of your directory.  
+This will entirely change the state of your repository directory to the version that is on that branch.  
 
-One note on switching branches - depending on the type of file and editing software, you might need to close and reopen the file you are looking at for it to represent the new branch.  I don't believe this will be a problem with any code editing software, but it might be necessary if you are saving text files or something in your git folder.
+Of note, depending on the type of file and editing software, you might need to close and reopen the files in your repository after switching branches or checking out an old version.  Matlab seems to automatically change the displayed files for you without making you reopen them, but you might run into this with some simple text editors or something.
 
 \subsection{Merging Branches}
 \label{sec:Merging}
 
-Lastly, I will discuss merging branches.  Consider the following situation:  I made some edits on this new branch I was working on.  I think it's good now and I'd like to combine it with the master branch (or some other branch).  However, the master branch has been updated by me or someone else since I started working on this new branch.  I would like to combine them somehow.
+Lastly, I will discuss merging branches, which is when you want to combine two branched versions of code.  Consider the following situation:  ``I made some edits on this new branch I was working on.  I think it's good now and I'd like to combine it with the master branch (or some other branch).  However, the master branch has been updated by me or someone else since I started working on this new branch.  I would like to combine them somehow."
 
 git has you covered with the \texttt{merge} command.  If you have two branches, branch1 and branch2, and you want to combine the two branches, you run
 
 \code{git checkout branch1}
 \code{git merge branch2}
 
-\emph{Important} note: The previous is not perfectly symmetric under exchange of branch1 and branch2.  Specifically, branch1 is updated to the merged file, whereas branch2 remains as it was.  This is important to remember because, as is usually the case, you will want to update the ``master" branch, and so you will want to have branch1 replaced with master in the previous code.
+\emph{Important} note: The previous is not perfectly symmetric under exchange of \texttt{branch1} and \texttt{branch2}.  Specifically, \texttt{branch1} is updated to the merged file, whereas \texttt{branch2} remains as it was.  This is important to remember because, as is frequently the case, you will want to update the ``\texttt{master}" branch, and so you will want to replace \texttt{branch1} with \texttt{master} in the previous code.
 
 When you try this merge, it is likely that there will be some conflicts between the files (some differences that git did not feel it could resolve automatically).  Git will inform you of this, and ask you to fix them.  To do this, you simply open the file(s) it says there are conflicts in, and you look for the part where it says something like
 
@@ -428,51 +456,67 @@ When you try this merge, it is likely that there will be some conflicts between 
 <some things from branch2>\\
 >>>>>>>>>>>>>branch2}
 
-Then you edit this section how you'd like.  Once finished, you need to tell git to commit these changes.  I recommend checking the status with \texttt{git status} at this point to see if there are any files that need to be restaged or added using \texttt{git add <fileName>} (maybe \texttt{git commit -am "message"} works as well).  Then run
+Then you edit this section into the final form that you would like the code to have after the merge.  Once finished, you need to tell git to commit these changes.  I recommend checking the status with \texttt{git status} at this point to see if there are any files that need to be restaged or added using 
+\code{git add <fileName>} 
+
+Then run
 
 \code{git commit -m "<message>"}
+
+(\texttt{git commit -am "message"} probably works as a shortcut for the previous two lines as well).  
 
 You can confirm that git seems to have done what you wanted by running 
 
 \code{git log --graph --decorate}
 
-It should show how the code branches diverged and were brought back together.  It will also tell you what commit (version) \texttt{branch2} is on.
+It should show how the code branches diverged and were brought them back together.  It will also tell you what commit (version) \texttt{branch2} is on.
 
 \subsection{Rebasing a Branch}
 
-I will not explain how to rebase a branch here.  I consider it outside of the scope.  It can be useful, but it is \emph{strongly} encouraged that you \emph{do not} use rebase when updating a remote repository that is stored on GitHub or the Citadel.  Otherwise, it can make a mess of the merge history if other people are making code edits on their own computer.
+I will not explain how to rebase a branch here.  I consider it outside of our scope.  You may want to be aware of it though.
 
-So that you have a vague idea what it is though, the \texttt{rebase} command allows you to basically take some edited \texttt{branch2} and ``stack it on" to the end of some other \texttt{branch1}, as if you just made edits on \texttt{branch1} to get to the final combined version of the two branches.  This will sort of make it so that history ignores the time when \texttt{branch1} and \texttt{branch2} diverged, and were perhaps edited.  
+To give a vague understanding, the \texttt{rebase} command allows you to basically take some edited \texttt{branch2} and ``stack it on" to the end of some other \texttt{branch1}, as if you just made edits on \texttt{branch1} to get to the final combined version of the two branches.  This will sort of make it so that the log history ignores the time when \texttt{branch1} and \texttt{branch2} diverged, and were perhaps edited.
 
-I believe that the way we will use git will not benefit much from this feature really, but in principle, it can make for a sort of simplified log history that makes it easier to find and go back to the old commits that you might be interested in.
+Rebasing can be useful, but it is \emph{strongly} encouraged that you \emph{do not} use rebase when updating a remote repository that is stored on GitHub or the Citadel.  Otherwise, it can make a mess of the merge history if other people are making code edits on their own computer.
 
-For the interested reader, a much better explanation is at \url{https://git-scm.com/book/en/v2/Git-Branching-Rebasing}.
+In principle, the \texttt{rebase} command can make for a sort of simplified log history that makes it easier to find and go back to the old commits that you might be interested in.
+
+For the interested reader, a fuller explanation is at\\ \url{https://git-scm.com/book/en/v2/Git-Branching-Rebasing}.
 
 \section{Using git with Remote Repositories: An Application to GitHub and the Citadel)}
+\label{sec:Remotes}
 
-One of the primary benefits of using git is that you can have remote repositories that can be updated with updated version from multiple programmers.  The general procedure is that you set up one (or multiple) of these remote repositories, and you can (1) copy updated commits from the remote repository that other people have edited or (2) make updates to the remote repository based on commits you have made on your local version of the repository.
+One of the primary benefits of using git is that you can have remote repositories that can be updated with edits from multiple programmers.  The general procedure is as follows: You set up one (or multiple) of these remote repositories, and you can then (1) copy updated commits from the remote repository to your local repository or (2) make updates to the remote repository based on commits you have made on your local repository.
 
 GitHub is, at its core, just a collection of such remote repositories.  However, you are free to designate practically any directory as a remote repository, whether it be on your personal computer, some shared computer, or a group server.
 
-In this section, I hope to give the basics on using and setting up remote repositories.  More importantly, I would like to establish some best practices for the situation in the Weld Lab, which I believe is to have duplicate remote repositories on the Citadel and GitHub, since I believe it will be easy to maintain, and has some benefits in terms of organization and backups against data loss.
+In this section, I hope to give the basics on using and setting up remote repositories.  More importantly, I would like to establish some standard practices for the situation in the Weld Lab.  I believe a good option for us is to have duplicate remote repositories on the Citadel and GitHub. The duplicates are easy to maintain and the there are benefits in terms of organization and backups against data loss.
 
 \subsection{Cloning from an Existing Remote Repository}
 
-First, a simple example.  Suppose a repository exists on GitHub at \texttt{https://github.com/pdotti/aGitRepo}.  Opening this page, you will see that GitHub has a bright green ``Clone or download" button.  Clicking this will tell you the url for this repository, namely \texttt{https://github.com/pdotti/aGitRepo.git}.  To clone a working copy onto your computer, you need only (1) open a command line in the directory where you want the repository to be put, and (2) enter the command
+\subsection{Clone from GitHub}
+First, a simple example.  Suppose a repository exists on GitHub at \newline\url{https://github.com/weldlabucsb/Weld-Lab-Git-Primer}.  Opening this page, you will see that GitHub has a bright green ``Clone or download" button.  Clicking this will tell you the url for this repository, namely \texttt{https://github.com/weldlabucsb/Weld-Lab-Git-Primer.git}.  To clone a working copy onto your computer, you need only (1) open a command line in the directory where you want the repository to be put, and (2) enter the command
 
-\code{git clone https://github.com/pdotti/aGitRepo.git}
+\code{git clone https://github.com/weldlabucsb/Weld-Lab-Git-Primer.git}
 
-And then you have a working repository for you to make commits on, branch into new versions, and use to update the original \texttt{https://github.com/pdotti/aGitRepo.git} on GitHub, but we will get to that in a later subsection.
+And then you have a working repository for you to make commits on, branch into new versions, and use to update the original \texttt{https://github.com/weldlabucsb/Weld-Lab-Git-Primer.git} on GitHub.  How to do this is explained in section \ref{sec:PushPull}.
 
-Now instead suppose that the remote repository is on the Citadel.  Specifically, as I hope will be come common practice, it is in the \texttt{GitRemotes} directory that has been made on the WeldLab2 volume of the Citadel (aka the citadel expansion).  This will have some directory path.  When I mount it with afp on my Mac, the directory path is \texttt{/Volumes/WeldLab2/GitRemotes}.  An example remote repository in this location might be \texttt{/Volumes/WeldLab2/GitRemotes/aGitRepo.git}.  You can clone this repository in much the same way as from GitHub with the command
+\subsection{Clone from Citadel}
+Now instead suppose that the remote repository is on the Citadel.  Specifically, as I hope will be come common practice, it is in the \texttt{GitRemotes} directory that has been made on the WeldLab2 volume of the Citadel (aka the citadel expansion).  This will have some directory path.  When I mount it with afp on my Mac, the directory path is \texttt{/Volumes/WeldLab2/GitRemotes}.  An example remote repository in this location might be\\ 
+\texttt{/Volumes/WeldLab2/GitRemotes/00\_GitTutorials/Weld-Lab-Git-Primer.git}.  You can clone this repository in much the same way as from GitHub with the command
 
-\code{git clone /Volumes/WeldLab2/GitRemotes/aGitRepo.git}
+\begin{center}
+\texttt{git clone /Volumes/WeldLab2/GitRemotes/00\_GitTutorials/Weld-Lab-Git-Primer.git}
+\end{center}
 
-Moreover, for organizational purposes, you can add sub-directories (folders) inside the \texttt{GitRemotes} directory to help organize the repositories (a feature GitHub lacks for some reason).  For example, you could put the folder \texttt{testRepos} in the \texttt{GitRemotes} folder to hold all of the repos we use for testing.  Then the path to clone from would just be
- 
-\code{/Volumes/WeldLab2/GitRemotes/testRepos/aGitRepo.git}
+For organizational purposes, you can add sub-directories (folders) inside the \texttt{GitRemotes} directory to help organize the repositories (a feature GitHub lacks for some reason).  The above git repository has such a subdirectory.  It is \texttt{00\_GitTutorials}.
 
-NOTE: You \emph{cannot} use these remote repositories the same way as you use a normal repository.  The reason is that they are ``bare" repositories, so you are not able to open the files in them from the finder / file explorer and edit them.  Instead, if you want to work with them, you are supposed to clone them to some other location on your computer and use that cloned repository to make edits and commits, and then use those commits to update the remote repository.  I believe otherwise it risks muddying up the commit history somehow... In any case, git will complain at you if you try to use a non-bare repository as a remote repository, and I presume it has a good reason for this.  This is not to say that you can't have regular repositories on the citadel.  Whether a repository is remote or not doesn't depend on where the data is physically stored, just whether or not it is designated as such.
+\subsection{A Note on Remote Repository Use}
+You \emph{cannot} use these remote repositories the same way as you use a normal repository.  That is to say, you are not able to open the files in them from the finder / file explorer and edit them.  The reason is that they are ``bare" repositories, which is what git requires of remote repositories.  Instead, if you want to work with them, you are supposed to clone them to some other location on your computer and use that cloned repository to make edits and commits.  Then you can use those commits to update the remote repository.  
+
+There might be work arounds, but this risks muddying up the commit history somehow.  In any case, git will complain at you if you try to use a non-bare repository as a remote repository, and I presume it has a good reason for this.  
+
+This is not to say that you can't have regular repositories on the citadel.  Whether a repository is remote or not doesn't depend on where the data is physically stored, just whether or not it is designated as such.
 
 \subsection{Seeing What Remotes You Have Setup}
 
@@ -492,24 +536,26 @@ Additionally, the remote repositories are shown when you use the \texttt{log} co
 
 \subsection{Making a Remote Repository on GitHub}
 
-Instead, suppose you have an existing repository and you want to put it onto GitHub.  First, log into GitHub and figure out where you want to put the repository \textemdash\ For example, you might go to \texttt{https://github.com/weldlabucsb}.  Then, on the webpage, use the prominent, green ``New" button to make a new (bare) repository on GitHub.  Follow the instructions to give it a name.  GitHub will then prompt you to set up this repository.  To do this, use the following code from the existing repository on your computer (which is very similar to the `` ...or push an existing repository from the command line" setup instructions that the GitHub website gives):
+Instead, suppose you have an existing local repository and you want to put it onto GitHub.  First, log into GitHub and figure out where you want to put the repository \textemdash\ For example, you might go to \texttt{https://github.com/weldlabucsb}.  Then, on the webpage, use the prominent, green ``New" button to make a new (bare) repository on GitHub.  Follow the instructions to give it a name.  GitHub will then prompt you to set up this repository.  To do this, use the following code from the existing repository on your computer:\footnote{This is very similar to the `` ...or push an existing repository from the command line" setup instructions that the GitHub website gives}
 
 \code{git remote add <remoteName> <URL>\\
 git push -u <remoteName> <myLocalBranch>}
 
-The \texttt{<URL>} will be exactly what GitHub says it should be (e.g., \texttt{https://github.com/weldlabucsb/aGitRepo.git}).  The \texttt{<remoteName>} is up to you, but I recommend \texttt{github}.  This will basically be your nickname for this repository.  By default, git likes to call it \texttt{origin}, but since there is more than one server we are likely to update to, the default seems confusing.
+The \texttt{<URL>} will be exactly what GitHub says it should be\\ (e.g., \texttt{https://github.com/weldlabucsb/aGitRepo.git}).  
 
-\texttt{<myLocalBranch>} will almost always be \texttt{master} at setup, unless you change the defaults.  However, in general, you might have multiple branches that you want tracked by the remote repository (in essence, the remote repository gets multiple branches.)  In that case, \texttt{<myLocalBranch>} would be a branch with a different name (such as \texttt{branch1} or \texttt{branch2} if we go back to the example branch names used in the branches section above.
+The \texttt{<remoteName>} is up to you, but I recommend \texttt{github}.  This will basically be your nickname for this repository.  By default, git likes to call it \texttt{origin}, but since there is more than one server we want to use, the default seems confusing.
+
+\texttt{<myLocalBranch>} will almost always be \texttt{master} at setup, unless you change the defaults. In general, you might have multiple branches that you want tracked by the remote repository (in essence, the remote repository gets multiple branches.)  In that case, \texttt{<myLocalBranch>} would be a different branch name.
 
 \subsection{Making a Remote Repository on the Citadel}
 
-Putting a remote repository on the Citadel requires a few extra initial steps, but is otherwise quite similar.  
+Putting a remote repository on the Citadel requires a few extra initial steps, but is otherwise quite similar to making one on GitHub.  
 
 First, you need to create a ``bare" repository from the existing repository.  To do this from the command line run
 
 \code{git clone --bare <existingRepoDirectoryPath> <newBareRepoFile>.git}
 
-Running this initially confused me slightly because you do not necessarily run it from within the existing repository.  If you happen to be in the existing repository, you should replace \texttt{<existingRepoDirectoryPath>} with a single period \texttt{.} which is the UNIX shorthand for ``the current directory".  Otherwise, it is just a path to the repository.
+Unlike most git commands, you do not necessarily run it from within the existing repository.  If you happen to be in the existing repository, you should replace \texttt{<existingRepoDirectoryPath>} with a single period \texttt{.} which is the UNIX shorthand for ``the current directory".  Otherwise, it is a file path to the local repository.
 
 The resulting bare repository will be in the file \texttt{<newBareRepoFile>.git}.
 
@@ -521,16 +567,16 @@ Then, navigate to this \texttt{<newBareRepoFile>.git} repository in the command 
 
 Frankly, I'm not sure this is necessary, but the reference I used said that this step should be done to configure it properly.
 
-Now, open the existing repository that you used to make the bare repository in the command line.  To tell your original repository where the new remote repository is, you run
+Now, go back to the original local repository that you used to make the bare repository in the command line.  To tell your original repository where the new remote repository is and make a first update to it, you run
 
 \code{git remote add <remoteName> <PATH/newBareRepoFile>.git\\
 git push -u <remoteName> <myLocalBranch>}  
 
-This is basically the same as the GitHub case, except the \texttt{URL} in that case has been replaced with a file path to the Citadel repository that you just made \texttt{<PATH/newBareRepoFile>.git}.  For example, the path might be \texttt{/Volumes/WeldLab2/GitRemotes/aGitRepo.git}.
+This is basically the same as the GitHub case, except the \texttt{<URL>} in that case has been replaced with a file path to the Citadel repository that you just made \texttt{<PATH/newBareRepoFile>.git}.  For example, the path might be \texttt{/Volumes/WeldLab2/GitRemotes/aGitRepo.git}.
 
 In this case, I recommend that \texttt{<remoteName>} be \texttt{citadel}.
 
-Again, \texttt{<myLocalBranch>} will almost certainly be \texttt{master} unless you are adding a new branch.
+As with making a remote repository on GitHub, \texttt{<myLocalBranch>} will almost certainly be \texttt{master} unless you are adding a new branch.
 
 \subsection{Pushing (``uploading") and Pulling (``downloading") from a Remote Repository}
 \label{sec:PushPull}
@@ -542,15 +588,15 @@ To update the remote repository, you use the \texttt{push} command:
 
 \code{git push <remoteName>}
 
-After the process completes, the newest commit on your machine will be used to update the history on the remote repository (either, \texttt{github} or \texttt{citadel} if you use the name convention I suggested.)
+The newest commit on your machine will be used to update the history on the remote repository.\footnote{\texttt{<remoteName>} will either be \texttt{github} or \texttt{citadel} if you use the suggested name convention.}
 
-This is simplest when you only ever push the \texttt{master} branch.  If you make other versions of the code that you save as different branches, you will need to tell the remote repository to keep track of those branches as well.  Otherwise, it will only keep the \texttt{master} branch and the old versions of it (A subtlety here is that if the version history of the master branch includes multiple branches, the versions on both of those branches will also be available).
+This is simplest when you only ever push the \texttt{master} branch.  You might make different branch versions of the code that you want also available and stored on the remote repository.  You will need to tell the remote repository to keep track of those branches as well.  Otherwise, it will only keep the \texttt{master} branch and the commit version history of this branch.\footnote{A subtlety here is that if the version history of the master branch includes multiple branches, the versions on both of those branches will also be available.}
 
 If you want to add one of your branches to the remote repository, you just use the 
 
 \code{git push -u <remoteName> <myLocalBranch>}  
 
-command again, but for \texttt{<myLocalBranch>}, put the appropriate branch name.  (NOTE: you will need to be on the branch that you want to put on the remote branch by using the \code{git checkout <myLocalBranch>} command.  I think git will let you know if you mess this up though, and tell you how to do it correctly.)
+command again, but for \texttt{<myLocalBranch>}, put the appropriate branch name.  (NOTE: you will need to be on the branch that you want to put on the remote branch by using the \code{git checkout <myLocalBranch>} command.  I think git will let you know if you mess this up though and tell you how to do it correctly.)
 
 \subsubsection{Pull}
 
@@ -558,19 +604,19 @@ When you want your local repository to be updated with the edits that other coll
 
 \code{git pull <remoteName>}
 
-This command checks all of the branches you have on the citadel and updates all of the local branches on your local repository that you.  (Of course, it only updates the branches that you have told git to mirror on the remote repository.)
+This command checks all of the branches you have on the remote \texttt{<remoteName>} and updates all of the local branches on your local repository.\footnote{Of course, it only updates the branches that you have told git to ``mirror" on the remote repository with the \texttt{git push -u ...} command.}
 
 If you only want one of the branches updated, you can use
 
 \code{git pull <remoteName> <branch>}
 
-There is a possibility that you and the person who edited the remote repository have made different, and possibly conflicting edits.  When you try the pull request, git will tell you this, and ask you to resolve the conflict in the same fashion as when using the \texttt{merge} command (see section \ref{sec:Merging})
+There is a possibility that you and the person who edited the remote repository have made conflicting edits since you last \texttt{pull}'d.  When you try the pull request, git will tell you this, and ask you to resolve the conflict in the same fashion as when using the \texttt{merge} command (see section \ref{sec:Merging})
 
 \subsubsection{Fetch and Merge - Alternative to Pull}
 
 Now, \texttt{pull} is simple, fast, and what you need most of the time.  However, maybe you want to check what new versions are in the remote repository before you use them to update your own.  
 
-To check the status of the remote repository, you use the \texttt{fetch} command.
+To check the remote repository, you use the \texttt{fetch} command.
 
 \code{git fetch <remoteName>}
 
@@ -578,27 +624,35 @@ It will give you the status of the branches in the remote repositories (i.e. whe
 
 \code{<branch> \ \ --> \ \ <remoteName>/<branch>}
 
-This means that there is an edit has been made to the branch \texttt{<branch>} on the remote repository, and it has saved this version to \texttt{<remoteName>/<branch>}.
+This means that there is an edit that has been made to the branch \texttt{<branch>} on the remote repository, and it has saved this version to \texttt{<remoteName>/<branch>}.
 
-You can then save this new version to a new branch and checkout that new branch all in once command with
+You can then save this new version to a new branch and checkout that new branch all in once with
 
-\code{git checkout -b <newRemoteBranch> <remoteName>/<branch>}
+\code{git checkout -b <remoteBranchCopy> <remoteName>/<branch>}
 
 Now, you are free to open the files that have been freshly updated with the edits from the remote repository.  Your branch has not been updated with these edits yet.  To return to that version of the folder, just checkout the branch again, using
 \code{git checkout <branch>}
 
-Once you have looked at the two versions and decided that you would like to make the edits to your version, you can merge the two branches.  
+Once you have looked at the two versions and decided that you would like to make the edits to your version, you can merge the two branches with the same commands as shown in section \ref{sec:Merging}.  
 
 \code{git checkout <branch>}
-\code{git merge <newRemoteBranch>}
+\code{git merge <remoteBranchCopy>}
+
+
+
 
 \newpage
-\section{Quick Overview of Commands from this Primer}
-The following is a quick reference table of the commands shown in this primer.  Inputs in square brackets are options that change how much information git shows you about the action, but not the effect of the command.
+\newgeometry{top=0.5in, left=0.5in, right=0.5in, bottom=0.5in}
+\thispagestyle{empty} % Remove page number
 
+\section{Quick Overview of Commands from this Primer}
+
+{\small Inputs in square brackets are options that change how much information git shows you about the action, but not the effect of the command.
+
+\begin{center}
 \begin{tabular}{|l|}
 \hline
-\textbf{Checking Status}\\
+\smallbold{Checking Status}\\
 \quad \texttt{git status [-vv]}\\
 
 \quad\texttt{git log [--graph] [--decorate]}\\
@@ -606,24 +660,24 @@ The following is a quick reference table of the commands shown in this primer.  
 \quad \texttt{git diff}\\
 \quad \quad(shows changes between current version and last commit)\\
 \hline
-\textbf{Create a repository} out of the current directory (not for creating a remote repositories)\\
+\smallbold{Create a repository} out of the current directory (not for creating a remote repositories)\\
 \quad \texttt{git init}\\
 \hline
-\textbf{Staging files} so that they are updated in the next commit\\
+\smallbold{Staging files} so that they are updated in the next commit\\
 \quad \texttt{git add <filename>}\\
 
 \quad \texttt{git add --all}\\
 
 \quad \texttt{git add *.<fileSuffix>}\\
 \hline
-\textbf{Commits}\\
+\smallbold{Commits}\\
  \quad \texttt{git commit -m "<Message describing this commit>"}\\
 
 \quad \texttt{git commit -am "<Message describing this commit>"}\\
 \quad \quad (Stages all modified files and commits in one step.  Saves using \texttt{add} command.)\\
 
 \hline
-\textbf{Branches}\\
+\smallbold{Branches}\\
 
 \quad \texttt{git branch}  \ \ \ (See what branches you have.)\\ 
 
@@ -634,27 +688,27 @@ The following is a quick reference table of the commands shown in this primer.  
 
 
 \hline
-\textbf{Merging branches}\\  The following two commands changes \texttt{branch1} into a merge of the two branches. \\
+\smallbold{Merging branches}\\  The following two commands changes \texttt{branch1} into a merge of the two branches. \\
 \quad \texttt{git checkout branch1}\\
 \quad \texttt{git merge branch2}\\
 
 \hline
-\textbf{Cloning a remote repository} onto your computer\\
+\smallbold{Cloning a remote repository} onto your computer\\
 \quad \texttt{git clone <githubURL>}\\
 
 \quad \texttt{git clone <directoryPathForRemoteRepositoryOnCitadel>.git}\\
 
 \hline
-\textbf{Checking remote repositories} that your local repository is linked to\\
+\smallbold{Checking remote repositories} that your local repository is linked to\\
 \quad \texttt{git remote [-vv]}\\
 
 \hline
-\textbf{New GitHub repository} setup.\\
+\smallbold{New GitHub repository Setup}\\
 After initializing a repository on GitHub (by just making one on the website)\\
 \quad \texttt{git remote add <remoteName> <gitHubRepositoryURL>}\\
 \quad \texttt{git push -u <remoteName> <myLocalBranch>}\\
 \hline
-\textbf{New Citadel Repository}\\
+\smallbold{New Citadel Repository Setup}\\
 \quad \texttt{git clone --bare <existingRepoDirectoryPath> <newBareRepoFile>.git}\\
 Move \texttt{<newBareRepoFile>.git} to the appropriate folder on the citadel.\\  
 Run the following command in that citadel folder.\\
@@ -664,52 +718,29 @@ Then, from the original working repository that you are linking to the remote re
 \quad \texttt{git push -u <remoteName> <myLocalBranch>}\\
 
 \hline
-\textbf{Using Remotes} - Updating them and copying updates from them\\
+\smallbold{Using Remotes} - Updating them and copying updates from them\\
 \quad \texttt{git push <remoteName>}\\
 \quad\quad Updates the remote, \texttt{ <remoteName>}, with the linked branch in your local repository.\\
 \quad \texttt{git push --all}\\
-
-\quad \texttt{git pull <remoteName>}\\
-
-
+\quad \quad Update all remotes\\
 \quad \texttt{git pull <remoteName> <branch>}\\
-
-
+\quad \quad Update your local branch \texttt{<branch>} based on the remote \texttt{<remoteName>}\\
+\quad \texttt{git pull <remoteName>}\\
+\quad \quad Update all branches based on the remote repository \texttt{<remoteName>}\\
 
 \quad \texttt{git fetch <remoteName>}\\
-
-
-\quad \texttt{git checkout -b <newRemoteBranch> <remoteName>/<branch>}
-
-
-
-
+\quad \quad Check remote for edits (but do not update)\\
+\quad \texttt{git checkout -b <newBranch> <remoteName>/<branch>}\\
+\quad \quad Make a new branch \texttt{<newBranch>} that is a copy of \texttt{<remoteName>/<branch>} and check it out\\
+\hline
 
 \end{tabular}
+\end{center}
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+%\end{adjustwidth}
+\restoregeometry
 
 
 
